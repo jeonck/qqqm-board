@@ -34,7 +34,12 @@ def save(data):
 
 
 def fetch_last_close():
-    """Yahoo chart API에서 마지막 완성된 일봉(날짜, 종가)을 가져온다."""
+    """Yahoo chart API에서 마지막 완성된 일봉(날짜, 종가)을 가져온다.
+
+    장중(미국 동부 16:05 이전)에 실행되면 당일 봉은 아직 마감 전
+    장중가이므로 건너뛰고, 전날까지의 마지막 완성 봉을 쓴다.
+    장 마감 뒤(16:05 이후)에는 당일 봉이 최종 종가다.
+    """
     url = "https://query1.finance.yahoo.com/v8/finance/chart/QQQM?range=5d&interval=1d"
     req = urllib.request.Request(url, headers=UA)
     with urllib.request.urlopen(req, timeout=30) as resp:
@@ -42,12 +47,17 @@ def fetch_last_close():
     result = payload["chart"]["result"][0]
     stamps = result["timestamp"]
     closes = result["indicators"]["quote"][0]["close"]
+    now_et = datetime.now(tz=NY)
+    today = now_et.date().isoformat()
+    market_closed = (now_et.hour, now_et.minute) >= (16, 5)
     for ts, close in reversed(list(zip(stamps, closes))):
         if close is None:
             continue
         date = datetime.fromtimestamp(ts, tz=NY).date().isoformat()
+        if date == today and not market_closed:
+            continue  # 장중 봉은 종가가 아님 — 기록하지 않는다
         return date, round(float(close), 2)
-    raise RuntimeError("Yahoo 응답에 종가가 없음")
+    raise RuntimeError("Yahoo 응답에 완성된 종가가 없음")
 
 
 def next_stake_price(data):
