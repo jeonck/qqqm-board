@@ -15,6 +15,7 @@ table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.95rem}
 th,td{border-bottom:1px solid #e5e5e5;padding:8px 6px;text-align:left}
 th{background:#f6f6f6} .num{text-align:right;font-variant-numeric:tabular-nums}
 .up{color:#0a7d2c} .down{color:#c0272d} .trig{font-weight:700;color:#8a5a00}
+.pager{margin:8px 0 20px;text-align:center} .pager button{padding:6px 14px;margin:0 8px;cursor:pointer} .pager button:disabled{opacity:.4;cursor:default}
 footer{color:#666;font-size:.85rem;margin-top:28px;border-top:1px solid #eee;padding-top:12px}
 @media(max-width:640px){table{font-size:.85rem}}
 </style>
@@ -22,7 +23,7 @@ footer{color:#666;font-size:.85rem;margin-top:28px;border-top:1px solid #eee;pad
 <body>
 <h1>📋 QQQM 말뚝박기 보드</h1>
 <p class="sub">조던 원칙 · 전고점 $300 기준 -5%마다 $1,000씩 분할 매수 · 저점 대비 +10% 반등 시 잔여 현금 전량 매수 · 매수·매도는 본인이 직접</p>
-<p class="sub">마지막 업데이트: 2026-11-13 10:05 ET · 최신 종가 2026-11-12</p>
+<p class="sub">마지막 업데이트: 2026-11-13 10:52 ET · 최신 종가 2026-11-12</p>
 
 <div class="cards">
 <div class="card"><div class="label">최신 종가 (2026-11-12)</div><div class="value">$283.39</div><div class="note">전고점 대비 -5.54%</div></div>
@@ -41,7 +42,7 @@ footer{color:#666;font-size:.85rem;margin-top:28px;border-top:1px solid #eee;pad
 </table>
 
 <h2>일일 종가 게시판</h2>
-<table><tr><th>날짜</th><th>종가</th><th>전일 대비</th><th>전고점 대비</th><th>트리거</th><th>투자 / 현금</th></tr>
+<table id="boardTable"><tr><th>날짜</th><th>종가</th><th>전일 대비</th><th>전고점 대비</th><th>트리거</th><th>투자 / 현금</th></tr>
 <tr><td>2026-11-12</td><td class='num'>$283.39</td><td class='num down'>-0.84 (-0.30%)</td><td class='num'>-5.54%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
 <tr><td>2026-11-11</td><td class='num'>$284.23</td><td class='num up'>+6.36 (+2.29%)</td><td class='num'>-5.26%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
 <tr><td>2026-11-10</td><td class='num'>$277.87</td><td class='num down'>-1.65 (-0.59%)</td><td class='num'>-7.38%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
@@ -49,6 +50,23 @@ footer{color:#666;font-size:.85rem;margin-top:28px;border-top:1px solid #eee;pad
 <tr><td>2026-11-06</td><td class='num'>$270.22</td><td class='num up'>+3.37 (+1.26%)</td><td class='num'>-9.93%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
 <tr><td>2026-11-05</td><td class='num'>$266.85</td><td class='num '>—</td><td class='num'>-11.05%</td><td class='trig'>2차 말뚝 완료 (시작 포지션)</td><td class='num'>$2,000 / $8,000</td></tr>
 </table>
+<div class="pager" id="pager"><button id="prevBtn">← 이전</button><span id="pageInfo"></span><button id="nextBtn">다음 →</button></div>
+<script>
+(function(){
+var rows = Array.prototype.slice.call(document.querySelectorAll('#boardTable tr')).slice(1);
+var per = 10, page = 0, pages = Math.max(1, Math.ceil(rows.length / per));
+var info = document.getElementById('pageInfo');
+var prev = document.getElementById('prevBtn'), next = document.getElementById('nextBtn');
+function show(){
+  rows.forEach(function(r, i){ r.style.display = (i >= page*per && i < (page+1)*per) ? '' : 'none'; });
+  info.textContent = (page+1) + ' / ' + pages + ' 페이지';
+  prev.disabled = page === 0; next.disabled = page >= pages-1;
+}
+prev.onclick = function(){ if(page > 0){ page--; show(); } };
+next.onclick = function(){ if(page < pages-1){ page++; show(); } };
+show();
+})();
+</script>
 
 <footer>
 규칙: 전고점 약 $300(최근 고점 $299.74 반올림), 총 현금 $10,000, -5%마다 $1,000 분할 매수, 저점 대비 +10% 반등 시 잔여 현금 전량 매수.
