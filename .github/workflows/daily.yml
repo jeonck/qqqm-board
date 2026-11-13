@@ -1,0 +1,44 @@
+---
+name: QQQM daily close board
+
+# 평일 미국 장 마감 후 실행: 22:15 UTC = 16:15 CST (동절기) / 17:15 CDT (하절기).
+# 장 마감은 15:00 CST / 16:00 CDT이므로 마감 1시간여 뒤에 종가를 가져온다.
+on:
+  schedule:
+    - cron: "15 22 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Update board with today's close
+        run: python3 pipeline/update.py
+      - name: Commit new entry
+        run: |
+          git config user.name "qqqm-board-bot"
+          git config user.email "qqqm-board-bot@users.noreply.github.com"
+          git add data/history.json index.html
+          git diff --cached --quiet || git commit -m "QQQM close $(date -u +%Y-%m-%d)"
+          git push
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+---
