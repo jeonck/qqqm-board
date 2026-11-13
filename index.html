@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QQQM 말뚝박기 보드 — 조던 원칙</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:880px;margin:0 auto;padding:24px 16px;color:#1a1a1a;line-height:1.5}
+h1{font-size:1.5rem;margin-bottom:4px} .sub{color:#666;margin-top:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
+.card{border:1px solid #ddd;border-radius:10px;padding:14px}
+.card .label{font-size:.8rem;color:#666} .card .value{font-size:1.35rem;font-weight:700}
+.card .note{font-size:.8rem;color:#666}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.95rem}
+th,td{border-bottom:1px solid #e5e5e5;padding:8px 6px;text-align:left}
+th{background:#f6f6f6} .num{text-align:right;font-variant-numeric:tabular-nums}
+.up{color:#0a7d2c} .down{color:#c0272d} .trig{font-weight:700;color:#8a5a00}
+footer{color:#666;font-size:.85rem;margin-top:28px;border-top:1px solid #eee;padding-top:12px}
+@media(max-width:640px){table{font-size:.85rem}}
+</style>
+</head>
+<body>
+<h1>📋 QQQM 말뚝박기 보드</h1>
+<p class="sub">조던 원칙 · 전고점 $300 기준 -5%마다 $1,000씩 분할 매수 · 저점 대비 +10% 반등 시 잔여 현금 전량 매수 · 매수·매도는 본인이 직접</p>
+<p class="sub">마지막 업데이트: 2026-11-13 09:29 ET · 최신 종가 2026-11-12</p>
+
+<div class="cards">
+<div class="card"><div class="label">최신 종가 (2026-11-12)</div><div class="value">$283.39</div><div class="note">전고점 대비 -5.54%</div></div>
+<div class="card"><div class="label">포지션</div><div class="value">$2,000 / $8,000</div><div class="note">투자금 / 현금 (총 $10,000)</div></div>
+<div class="card"><div class="label">다음 매수 트리거</div><div class="value">$255.00</div><div class="note">3차 말뚝 · 종가 $255.00 이하 시 $1,000 매수</div></div>
+<div class="card"><div class="label">V자 반등 트리거</div><div class="value">$293.54</div><div class="note">저점 $266.85 (2026-11-05) 대비 +10%</div></div>
+</div>
+
+<h2>말뚝 ladder</h2>
+<table><tr><th>말뚝</th><th>하락률</th><th>트리거가</th><th>상태</th></tr>
+<tr><td>1차</td><td>-5%</td><td>$285.00</td><td>✅ 완료</td></tr>
+<tr><td>2차</td><td>-10%</td><td>$270.00</td><td>✅ 완료</td></tr>
+<tr><td>3차</td><td>-15%</td><td>$255.00</td><td>⏳ 다음</td></tr>
+<tr><td>4차</td><td>-20%</td><td>$240.00</td><td>대기</td></tr>
+<tr><td>5차</td><td>-25%</td><td>$225.00</td><td>대기</td></tr>
+</table>
+
+<h2>일일 종가 게시판</h2>
+<table><tr><th>날짜</th><th>종가</th><th>전일 대비</th><th>전고점 대비</th><th>트리거</th><th>투자 / 현금</th></tr>
+<tr><td>2026-11-12</td><td class='num'>$283.39</td><td class='num down'>-0.84 (-0.30%)</td><td class='num'>-5.54%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
+<tr><td>2026-11-11</td><td class='num'>$284.23</td><td class='num up'>+6.36 (+2.29%)</td><td class='num'>-5.26%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
+<tr><td>2026-11-10</td><td class='num'>$277.87</td><td class='num down'>-1.65 (-0.59%)</td><td class='num'>-7.38%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
+<tr><td>2026-11-09</td><td class='num'>$279.52</td><td class='num up'>+9.30 (+3.44%)</td><td class='num'>-6.83%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
+<tr><td>2026-11-06</td><td class='num'>$270.22</td><td class='num up'>+3.37 (+1.26%)</td><td class='num'>-9.93%</td><td class=''>없음</td><td class='num'>$2,000 / $8,000</td></tr>
+<tr><td>2026-11-05</td><td class='num'>$266.85</td><td class='num '>—</td><td class='num'>-11.05%</td><td class='trig'>2차 말뚝 완료 (시작 포지션)</td><td class='num'>$2,000 / $8,000</td></tr>
+</table>
+
+<footer>
+규칙: 전고점 약 $300(최근 고점 $299.74 반올림), 총 현금 $10,000, -5%마다 $1,000 분할 매수, 저점 대비 +10% 반등 시 잔여 현금 전량 매수.
+종가는 미국 동부 16:00 마감 기준, 출처 Yahoo Finance. 원본 데이터: <a href="data/history.json">history.json</a> ·
+<a href="https://github.com/jeonck/qqqm-board">GitHub 저장소</a>
+</footer>
+</body>
+</html>
