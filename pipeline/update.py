@@ -80,6 +80,24 @@ def fmt_signed(n, suffix=""):
     return f"{sign}{n:,.2f}{suffix}"
 
 
+PAGER_JS = """<script>
+(function(){
+var rows = Array.prototype.slice.call(document.querySelectorAll('#boardTable tr')).slice(1);
+var per = 10, page = 0, pages = Math.max(1, Math.ceil(rows.length / per));
+var info = document.getElementById('pageInfo');
+var prev = document.getElementById('prevBtn'), next = document.getElementById('nextBtn');
+function show(){
+  rows.forEach(function(r, i){ r.style.display = (i >= page*per && i < (page+1)*per) ? '' : 'none'; });
+  info.textContent = (page+1) + ' / ' + pages + ' 페이지';
+  prev.disabled = page === 0; next.disabled = page >= pages-1;
+}
+prev.onclick = function(){ if(page > 0){ page--; show(); } };
+next.onclick = function(){ if(page < pages-1){ page++; show(); } };
+show();
+})();
+</script>"""
+
+
 def render(data):
     entries = sorted(data["entries"], key=lambda e: e["date"], reverse=True)
     latest = entries[0]
@@ -134,6 +152,7 @@ table{{width:100%;border-collapse:collapse;margin:16px 0;font-size:.95rem}}
 th,td{{border-bottom:1px solid #e5e5e5;padding:8px 6px;text-align:left}}
 th{{background:#f6f6f6}} .num{{text-align:right;font-variant-numeric:tabular-nums}}
 .up{{color:#0a7d2c}} .down{{color:#c0272d}} .trig{{font-weight:700;color:#8a5a00}}
+.pager{{margin:8px 0 20px;text-align:center}} .pager button{{padding:6px 14px;margin:0 8px;cursor:pointer}} .pager button:disabled{{opacity:.4;cursor:default}}
 footer{{color:#666;font-size:.85rem;margin-top:28px;border-top:1px solid #eee;padding-top:12px}}
 @media(max-width:640px){{table{{font-size:.85rem}}}}
 </style>
@@ -155,8 +174,10 @@ footer{{color:#666;font-size:.85rem;margin-top:28px;border-top:1px solid #eee;pa
 {ladder_rows}</table>
 
 <h2>일일 종가 게시판</h2>
-<table><tr><th>날짜</th><th>종가</th><th>전일 대비</th><th>전고점 대비</th><th>트리거</th><th>투자 / 현금</th></tr>
+<table id="boardTable"><tr><th>날짜</th><th>종가</th><th>전일 대비</th><th>전고점 대비</th><th>트리거</th><th>투자 / 현금</th></tr>
 {board_rows}</table>
+<div class="pager" id="pager"><button id="prevBtn">← 이전</button><span id="pageInfo"></span><button id="nextBtn">다음 →</button></div>
+{PAGER_JS}
 
 <footer>
 규칙: 전고점 약 $300(최근 고점 $299.74 반올림), 총 현금 $10,000, -5%마다 $1,000 분할 매수, 저점 대비 +10% 반등 시 잔여 현금 전량 매수.
